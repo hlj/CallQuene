@@ -8,7 +8,8 @@
 以控制资源消耗。
 
 ##使用方法： 
-1.   应用到已有对象  
+1.   应用到已有对象 
+
         var CQ = require('callQuene').CallQuene;
         var cq = new CQ({parallelNumber:2}); //同时运行数量为2
 
@@ -35,6 +36,7 @@
         //output: 2,4,3,5
 
 2.   显式调用  
+
         var CQ = require('callQuene').CallQuene;
         var cq = new CQ(); //默认运行数量为1
 
@@ -51,23 +53,31 @@
 
 ##API:
    *  创建CallQuene实例  
+
         var CQ = require('callQuene').CallQuene;
         var cq = new CQ({parallelNumber:100,delay:30});
+
       参数:  
         1. parallelNumber: 并发执行数量，默认为1  
         2. delay: 执行延时，默认为0。此参数通常配合parallelNumber=1使用。  
+
    *  add(caller,fn,args) : 将一次异步调用加入队列  
       参数:  
         1. caller: 函数所属的对象，如果为全局函数，可用this  
         2. fn: 异步函数  
         3. args: 调用此函数的参数列表,必须是一个数组,如: [1,3,b,{a:1},callback]
+
    *  applyTo(obj,fns) : 将限制应用到一个对象的所有指定方法上  
       参数:  
         1. obj: 将要应用的对象
         2. fns: 要被限制的方法列表，必须是一个数组，如：['aFunc1','aFunc2']
+
    *  count : 获取当前队列中剩余的调用数量
+
    *  runningCount: 获取当前正在运行中的异步调用数量
+
    *  parallelNumbers: 获取或设置并发限制数量
+
    *  delay: 获取或设置调用延时
 
 
