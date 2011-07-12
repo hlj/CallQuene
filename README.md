@@ -1,3 +1,94 @@
+# Call Quene for Node.js 
+   (Thanks to google translate)
+
+   Restricted number of concurrent running to some asynchronous method.  
+
+## Puspose: 
+   Benifit from Node.js powerful ability to run asynchronously, we can easily write while serving thousands of customers back-end services. But in the real world, many resources are limited, 
+Such as database connections, file handles, network bandwidth, and so on. You may be able to easily Node.js program itself to cope with high concurrent access, but it is likely to wear down the old back-end database. 
+Therefore, we sometimes need to limit concurrent traffice of the scarce resources. Call Quene is an easy to use js libraries, you can specify certain restrictions on asynchronous methods to control resource consumption. 
+
+## Usage: 
+1 applied to existing objects 
+
+        var CQ = require ('callQuene'). CallQuene; 
+        var cq = new CQ ({parallelNumber: 2}); / / number of parallel set to  2 
+
+        function cb (sum) {console.log (sum);} 
+        var obj = { 
+            val: 15, 
+            add1: function (a, b, cb) { 
+                setTimeout (cb, 50, a + b); 
+            } 
+            add2: function (a, b, cb) { 
+                setTimeout (cb, 150, a + b); 
+            } 
+                add3: function (a, b) { 
+            return a + b; 
+            } 
+        }; 
+     
+        cq.applyTo (obj, ['add1', 'add2']); / / cq applied to the obj to the asynchronous method 
+        / / The following 4 time calls will be limited to runs only 2 at a time, so all of the four calls takes about 300ms. 
+        obj.add1 (1,1); 
+        obj.add2 (1,2); 
+        obj.add1 (1,3); 
+        obj.add2 (1,4); 
+        / / Output: 2,4,3,5 
+
+(2) explicitly call 
+
+        var CQ = require ('callQuene'). CallQuene; 
+        var cq = new CQ (); / / default number of parallel is 1 
+
+        function asyncAdd (a, b, cb) { 
+            setTimeout (cb, 200, a + b); 
+        } 
+        var sum = 0; 
+            function cb (v) { 
+            sum + = v; 
+        } 
+        / / Use the Add method to add an asynchronous call queue 
+        cq.add (this, asyncAdd, [1,2, cb]); 
+        cq.add (this, asyncAdd, [2,3]); 
+
+## API: 
+   * Create an instance for CallQuene 
+
+        var CQ = require ('callQuene'). CallQuene; 
+        var cq = new CQ ({parallelNumber: 100, delay: 30}); 
+
+      Parameters: 
+        1. parallelNumber: the number of concurrent execution, the default is 1 
+        2. delay: delay execution, the default is 0. This parameter is typically used with parallelNumber = 1. 
+
+   * add (caller, fn, args): an asynchronous call to join the queue 
+      Parameters: 
+        1. caller: function belongs to the object, if a global function, available <i>this</i> 
+        2. fn: Asynchronous function 
+        3. args: call this function's parameter list must be an array, such as: [1,3, b, {a: 1}, callback] 
+
+   * applyTo (obj, fns): the limit applied to a specified method on all objects 
+      Parameters: 
+        1. Obj: the object to be applied 
+        2. fns: list of methods to be limited, must be an array, such as: ['aFunc1', 'aFunc2'] 
+
+   * count: get the current number of calls remaining in the queue 
+
+   * runningCount: get the current running in the number of asynchronous calls 
+
+   * parallelNumbers: Gets or sets the number of concurrent constraints 
+
+   * delay: Get or set the call delay 
+
+
+## Test 
+  Unit Testing with jasmine-node. In the root directory of the source,run `jasmine-node spec` may start all the tests.
+
+
+
+***
+
 # Call Quene for Node.js
    限制某些异步方法并发运行的的数量
 
