@@ -1,14 +1,14 @@
 # Call Quene for Node.js
-    限制某些异步方法并发运行的的数量
-***
+   限制某些异步方法并发运行的的数量
+
 ##意图:
-    得益于Node.js强大的异步运行能力，我们能轻易编写出同时服务于成千上万用户的后台服务。但在真实的世界里,许多资源都是有限的,
+   得益于Node.js强大的异步运行能力，我们能轻易编写出同时服务于成千上万用户的后台服务。但在真实的世界里,许多资源都是有限的,
 比如数据库连接、文件句柄、网络带宽等等。你的Node.js程序本身也许能轻松的应付极高的并发访问,但却很可能拖垮后端老旧的数据库。
 因此，我们有时需要限制对一些稀缺资源的并发访问量。Call Quene就是一个简单易用的js库，可以对你指定的某些异步方法施加限制，
 以控制资源消耗。
-***
-##使用方法：
-   1.应用到已有对象
+
+##使用方法： 
+1.   应用到已有对象  
         var CQ = require('callQuene').CallQuene;
         var cq = new CQ({parallelNumber:2}); //同时运行数量为2
 
@@ -34,7 +34,7 @@
         obj.add2(1,4);
         //output: 2,4,3,5
 
-   2.显式调用
+2.   显式调用  
         var CQ = require('callQuene').CallQuene;
         var cq = new CQ(); //默认运行数量为1
 
@@ -48,20 +48,20 @@
         //使用add方法将异步调用放入队列
         cq.add(this,asyncAdd,[1,2,cb]);
         cq.add(this,asyncAdd,[2,3]);
-***
+
 ##API:
-   *  创建CallQuene实例
+   *  创建CallQuene实例  
         var CQ = require('callQuene').CallQuene;
         var cq = new CQ({parallelNumber:100,delay:30});
       参数:  
         1. parallelNumber: 并发执行数量，默认为1  
         2. delay: 执行延时，默认为0。此参数通常配合parallelNumber=1使用。  
-   *  add(caller,fn,args) : 将一次异步调用加入队列
+   *  add(caller,fn,args) : 将一次异步调用加入队列  
       参数:  
         1. caller: 函数所属的对象，如果为全局函数，可用this  
         2. fn: 异步函数  
         3. args: 调用此函数的参数列表,必须是一个数组,如: [1,3,b,{a:1},callback]
-   *  applyTo(obj,fns) : 将限制应用到一个对象的所有指定方法上
+   *  applyTo(obj,fns) : 将限制应用到一个对象的所有指定方法上  
       参数:  
         1. obj: 将要应用的对象
         2. fns: 要被限制的方法列表，必须是一个数组，如：['aFunc1','aFunc2']
@@ -70,6 +70,6 @@
    *  parallelNumbers: 获取或设置并发限制数量
    *  delay: 获取或设置调用延时
 
-***
+
 ##测试
   单元测试使用jasmine-node。在源代码根目录运行`jasmine-node spec`可运行所有测试。
